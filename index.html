@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zee's Portfolio</title>
+    <meta name="description" content="Jihadul Islam (Zee) - Connect with me on all social platforms">
+    <meta name="keywords" content="Jihadul Islam, Zee, Portfolio, Social Media, GitHub, Developer">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <style>
+        /* General Styling */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+            outline: none;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(145deg, #0a0a0a, #1c1c1c);
+            color: #fffff0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+            padding: 1rem;
+            position: relative;
+        }
+
+        /* Loading Animation */
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(145deg, #0a0a0a, #1c1c1c);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+
+        .loading-screen.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .loader {
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgba(255, 255, 240, 0.3);
+            border-top: 3px solid #fffff0;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Particle Background */
+        #particles-js {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
+
+        /* Main Container */
+        .container {
+            text-align: center;
+            padding: 2rem 1rem;
+            width: 100%;
+            max-width: 1200px;
+            opacity: 0;
+            animation: fadeInUp 1s ease 0.5s forwards;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Header with Typewriter Animation */
+        header {
+            margin-bottom: 2rem;
+        }
+
+        .typewriter h1 {
+            font-size: 5rem;
+            font-weight: 900;
+            color: #fffff0;
+            display: inline-block;
+            overflow: hidden;
+            white-space: nowrap;
+            border-right: .15em solid #fffff0;
+            letter-spacing: .10em;
+            animation: 
+                typing 3.5s steps(30, end) forwards,
+                blink-caret .75s step-end infinite;
+        }
+
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: #fffff0; }
+        }
+
+        /* Social Cards Grid */
+        .social-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 2rem;
+            perspective: 1200px;
+        }
+
+        /* Flip Card Styling */
+        .flip-card {
+            background-color: transparent;
+            width: 100%;
+            height: 250px;
+            border-radius: 15px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .flip-card:hover {
+            transform: translateY(-10px) scale(1.05);
+            box-shadow: 0 0 15px rgba(255, 255, 240, 0.5), 0 0 30px rgba(255, 255, 240, 0.3);
+        }
+
+        .flip-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.7s;
+            transform-style: preserve-3d;
+        }
+
+        .flip-card:hover .flip-card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .flip-card-front, .flip-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+            border-radius: 15px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 1.5rem;
+        }
+
+        .flip-card-front {
+            background: rgba(30, 30, 30, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 240, 0.3);
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .flip-card-front i {
+            font-size: 4rem;
+            margin-bottom: 1.2rem;
+            color: #fffff0;
+            transition: all 0.3s ease;
+        }
+
+        .flip-card:hover .flip-card-front i {
+            transform: scale(1.1);
+        }
+
+        .flip-card-back {
+            background: linear-gradient(135deg, #fffff0, #f0f0f0);
+            color: #1c1c1c;
+            transform: rotateY(180deg);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .flip-card-back p {
+            font-size: 1rem;
+            font-weight: 400;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .visit-btn {
+            padding: 0.8rem 2rem;
+            border: 2px solid #1c1c1c;
+            border-radius: 25px;
+            color: #1c1c1c;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .visit-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transition: left 0.5s;
+        }
+
+        .visit-btn:hover::before {
+            left: 100%;
+        }
+
+        .visit-btn:hover {
+            background-color: #1c1c1c;
+            color: #00ffee;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Platform-specific colors for icons */
+        .fa-x-twitter { color: #1DA1F2; }
+        .fa-facebook-f { color: #1877F2; }
+        .fa-tiktok { color: #FF0050; }
+        .fa-instagram { color: #E4405F; }
+        .fa-whatsapp { color: #25D366; }
+        .fa-discord { color: #7289DA; }
+        .fa-bluesky { color: #00A8E8; }
+        .fa-youtube { color: #FF0000; }
+        .fa-telegram { color: #0088CC; }
+        .fa-github { color: #333; }
+
+        /* Footer */
+        footer {
+            margin-top: 4rem;
+            padding: 1rem;
+            color: #888;
+            font-size: 0.9rem;
+        }
+
+        /* Scroll to top button */
+        .scroll-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 255, 240, 0.1);
+            border: 1px solid rgba(255, 255, 240, 0.3);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #fffff0;
+            text-decoration: none;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .scroll-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .scroll-top:hover {
+            background: rgba(255, 255, 240, 0.2);
+            transform: translateY(-3px);
+        }
+
+        /* Media Queries */
+        @media (max-width: 768px) {
+            .typewriter h1 {
+                font-size: 2.5rem;
+                letter-spacing: .05em;
+            }
+            
+            .social-cards {
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                gap: 1.5rem;
+            }
+            
+            .flip-card {
+                height: 220px;
+            }
+            
+            .flip-card-front i {
+                font-size: 3.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body { 
+                padding: 0.5rem; 
+            }
+            
+            .container { 
+                padding: 1.5rem 0.5rem; 
+            }
+            
+            .typewriter h1 {
+                font-size: 1.8rem;
+            }
+            
+            .social-cards {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            
+            .flip-card {
+                height: 200px;
+            }
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #1c1c1c;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #fffff0;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #e0e0d0;
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loader"></div>
+    </div>
+
+    <div id="particles-js"></div>
+
+    <div class="container">
+        <header class="typewriter">
+            <h1>Jihadul Islam (Zee)</h1>
+        </header>
+
+        <main class="social-cards">
+            <div class="flip-card">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front">
+                        <i class="fa-brands fa-x-twitter"></i>
+                        <p>X (Twitter)</p>
+                    </div>
+                    <div class="flip-card-back">
+                        <p>Follow me instantly on X</p>
+                        <a href="https://x.com/intent/follow?screen_name=zeexvoo" target="_blank" rel="noopener noreferrer" class="visit-btn">Visit</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flip-card">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front">
+                        <i class="fa-brands fa-facebook-f"></i>
+                        <p>Facebook</p>
+                    </div>
+                    <div class="flip-card-back">
+                        <p>Connect with me on Facebook</p>
+                        <a href="https://facebook.com/zeexvoo" target="_blank" rel="noopener noreferrer" class="visit-btn">Visit</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="flip-card">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front">
+                        <i class="fab fa-tiktok"></i>
+                        <p>TikTok</p>
+                    </div>
+                    <div class="flip-card-back">
+                        <p>Connect with me on TikTok</p>
+                        <a href="https://www.tiktok.com/@zeevoox" target="_blank" rel="noopener noreferrer" class="visit-btn">Visit</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="flip-card">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front">
+                        <i class="fab fa-instagram"></i>
+                        <p>Instagram</p>
+                    </div>
+                    <div class="flip-card-back">
+                        <p>Connect with me on Instagram</p>
+                        <a href="https://www.instagram.com/zeexvoo?igsh=MWl2c2dteTdvOWxjbg==" target="_blank" rel="noopener noreferrer" class="visit-btn">Visit</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="flip-card">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front">
+                        <i class="fa-brands fa-whatsapp"></i>
+                        <p>WhatsApp</p>
+                    </div>
+                    <div class="flip-card-back">
+                        <p>Join with me on WhatsApp</p>
+                        <a href="https://whatsapp.com/channel/0029Vb6EUka2f3EOaZuy4U3T" target="_blank" rel="noopener noreferrer" class="visit-btn">Visit</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="flip-card">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front">
+                        <i class="fa-brands fa-discord"></i>
+                        <p>Discord</p>
+                    </div>
+                    <div class="flip-card-back">
+                        <p>Join with me on Discord</p>
+                        <a href="https://discord.gg/5W3K3jFXVG" target="_blank" rel="noopener noreferrer" class="visit-btn">Visit</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="flip-card">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front">
+                        <i class="fa-brands fa-bluesky"></i>
+                        <p>Bluesky</p>
+                    </div>
+                    <div class="flip-card-back">
+                        <p>Connect with me on Bluesky</p>
+                        <a href="https://bsky.app/profile/zeexvoo.bsky.social" target="_blank" rel="noopener noreferrer" class="visit-btn">Visit</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="flip-card">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front">
+                        <i class="fa-brands fa-youtube"></i>
+                        <p>YouTube</p>
+                    </div>
+                    <div class="flip-card-back">
+                        <p>Join with me on YouTube</p>
+                        <a href="https://www.youtube.com/@zeexve" target="_blank" rel="noopener noreferrer" class="visit-btn">Visit</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="flip-card">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front">
+                        <i class="fa-brands fa-telegram"></i>
+                        <p>Telegram</p>
+                    </div>
+                    <div class="flip-card-back">
+                        <p>Join with me on Telegram</p>
+                        <a href="https://t.me/zeexvee" target="_blank" rel="noopener noreferrer" class="visit-btn">Visit</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flip-card">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front">
+                        <i class="fa-brands fa-github"></i>
+                        <p>GitHub</p>
+                    </div>
+                    <div class="flip-card-back">
+                        <p>Explore my code and projects</p>
+                        <a href="https://github.com/zeeveex" target="_blank" rel="noopener noreferrer" class="visit-btn">Visit</a>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Scroll to top button -->
+    <a href="#" class="scroll-top" id="scrollTop">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+
+    <footer>
+        <p>Made by Jihadul Islam (Zee)</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        // Loading screen
+        window.addEventListener('load', function() {
+            setTimeout(() => {
+                document.getElementById('loadingScreen').classList.add('hidden');
+            }, 1000);
+        });
+
+        // Particles.js configuration
+        particlesJS("particles-js", {
+            "particles": {
+                "number": {
+                    "value": 60,
+                    "density": {
+                        "enable": true,
+                        "value_area": 800
+                    }
+                },
+                "color": { "value": "#fffff0" },
+                "shape": { "type": "circle" },
+                "opacity": {
+                    "value": 0.5,
+                    "random": true,
+                    "anim": {
+                        "enable": true,
+                        "speed": 1,
+                        "opacity_min": 0.1,
+                        "sync": false
+                    }
+                },
+                "size": {
+                    "value": 3,
+                    "random": true
+                },
+                "line_linked": {
+                    "enable": true,
+                    "distance": 150,
+                    "color": "#fffff0",
+                    "opacity": 0.4,
+                    "width": 1
+                },
+                "move": {
+                    "enable": true,
+                    "speed": 4,
+                    "direction": "none",
+                    "random": false,
+                    "straight": false,
+                    "out_mode": "out",
+                    "bounce": false
+                }
+            },
+            "interactivity": {
+                "detect_on": "canvas",
+                "events": {
+                    "onhover": {
+                        "enable": true,
+                        "mode": "repulse"
+                    },
+                    "onclick": {
+                        "enable": true,
+                        "mode": "push"
+                    },
+                    "resize": true
+                },
+                "modes": {
+                    "repulse": {
+                        "distance": 100,
+                        "duration": 0.4
+                    },
+                    "push": {
+                        "particles_nb": 4
+                    }
+                }
+            },
+            "retina_detect": true
+        });
+
+        // Scroll to top functionality
+        const scrollTopBtn = document.getElementById('scrollTop');
+        
+        window.addEventListener('scroll', function() {
+            if (window.pageYOffset > 300) {
+                scrollTopBtn.classList.add('visible');
+            } else {
+                scrollTopBtn.classList.remove('visible');
+            }
+        });
+
+        scrollTopBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
+        // Add click analytics (optional)
+        document.querySelectorAll('.visit-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const platform = this.closest('.flip-card').querySelector('.flip-card-front p').textContent;
+                console.log(`Clicked: ${platform}`);
+                // You can add analytics tracking here
+            });
+        });
+
+        // Enhanced mobile touch interactions
+        if ('ontouchstart' in window) {
+            document.querySelectorAll('.flip-card').forEach(card => {
+                card.addEventListener('touchstart', function() {
+                    this.classList.add('touch-hover');
+                });
+                
+                card.addEventListener('touchend', function() {
+                    setTimeout(() => {
+                        this.classList.remove('touch-hover');
+                    }, 300);
+                });
+            });
+        }
+    </script>
+</body>
+</html>
